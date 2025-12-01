@@ -5,35 +5,36 @@
   const materialTemplate = document.querySelector("#material-template");
   const materialList = document.querySelector("#material-list");
 
+  const loader = document.querySelector("loader");
+
   //This information needs to be removed then pulled with an AJAX Call using the Fetch API
   //this is the api url https://swiftpixel.com/earbud/api/materials"
 
-  const materialListData = [
-    {
-      heading: "Precision-Crafted Polymers",
-      description: "Our earbuds are meticulously molded from high-quality plastics, ensuring a blend of elegance, comfort, and resilience that's second to none."
-    },
-    {
-      heading: "Luxurious Silicone Harmony",
-      description: "Our uniquely engineered ear tips are cocooned in plush silicone, delivering an opulent embrace for your ears, ensuring an unrivaled fit and exquisite audio experience."
-    },
-    {
-      heading: "Rubberized Cables",
-      description: "Experience the unparalleled freedom of movement with our flexible rubber cables that promise durability without compromise."
-    },
-    {
-      heading: "Enhanced Comfort Sensors",
-      description: "A touch of magic in the form of built-in microphones and sensors empowers your earbuds to obey your every command, making your audio journey seamless and enchanting."
-    },
-    {
-      heading: "Artistic Mesh Guard",
-      description: "Shielded by artful mesh screens, our speakers remain untarnished, keeping your listening experience pristine."
-    }
-  ];
+  // const materialListData = [
+  //   {
+  //     heading: "Precision-Crafted Polymers",
+  //     description: "Our earbuds are meticulously molded from high-quality plastics, ensuring a blend of elegance, comfort, and resilience that's second to none."
+  //   },
+  //   {
+  //     heading: "Luxurious Silicone Harmony",
+  //     description: "Our uniquely engineered ear tips are cocooned in plush silicone, delivering an opulent embrace for your ears, ensuring an unrivaled fit and exquisite audio experience."
+  //   },
+  //   {
+  //     heading: "Rubberized Cables",
+  //     description: "Experience the unparalleled freedom of movement with our flexible rubber cables that promise durability without compromise."
+  //   },
+  //   {
+  //     heading: "Enhanced Comfort Sensors",
+  //     description: "A touch of magic in the form of built-in microphones and sensors empowers your earbuds to obey your every command, making your audio journey seamless and enchanting."
+  //   },
+  //   {
+  //     heading: "Artistic Mesh Guard",
+  //     description: "Shielded by artful mesh screens, our speakers remain untarnished, keeping your listening experience pristine."
+  //   }
+  // ];
 
   //functions
   function loadInfoBoxes() {
-
     fetch("https://swiftpixel.com/earbud/api/infoboxes")
     .then(response => response.json())
     .then(infoBoxes => {
@@ -64,7 +65,7 @@
   function loadMaterialInfo() {
 
     //Add loader in HTML, write code to show it here
-
+    loader.classList.toggle("hidden");
     //make AJAX Call here
 
      //this is the api url https://swiftpixel.com/earbud/api/materials"
@@ -81,10 +82,15 @@
       materialDescription.textContent = material.description;
 
       //Hide the loader
-
+      loader.classList.toggle("hidden");
       //Append the populated template to the list
       materialList.appendChild(clone);
     })
+    .catch(error => {
+      //make a meaningful error message and post to DOM
+      console.log(error);
+      materialList.innerHTML = `<p>Oops something in the Material List went wrong. It may be your internet connection or 
+      it might be us. Please try again later.</p>`;})
   }
   loadMaterialInfo();
 
