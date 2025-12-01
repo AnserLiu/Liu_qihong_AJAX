@@ -5,7 +5,7 @@
   const materialTemplate = document.querySelector("#material-template");
   const materialList = document.querySelector("#material-list");
 
-  const loader = document.querySelector("loader");
+  const loader = document.querySelector("#loader");
 
   //This information needs to be removed then pulled with an AJAX Call using the Fetch API
   //this is the api url https://swiftpixel.com/earbud/api/materials"
@@ -70,21 +70,32 @@
 
      //this is the api url https://swiftpixel.com/earbud/api/materials"
 
+      // // clone the template li with h3 and p inside
+      // const clone = materialTemplate.content.cloneNode(true);
+      // // populate the cloned template
+      // const materialHeading = clone.querySelector(".material-heading");
+      // materialHeading.textContent = material.heading;
 
-    materialListData.forEach(material => {
-      // clone the template li with h3 and p inside
-      const clone = materialTemplate.content.cloneNode(true);
-      // populate the cloned template
-      const materialHeading = clone.querySelector(".material-heading");
-      materialHeading.textContent = material.heading;
+      // const materialDescription = clone.querySelector(".material-description");
+      // materialDescription.textContent = material.description;
+      fetch("https://swiftpixel.com/earbud/api/materials")
+        .then(response => response.json())
+        .then(materials => {
+          console.log(materials);
 
-      const materialDescription = clone.querySelector(".material-description");
-      materialDescription.textContent = material.description;
+          materialList.innerHTML = ""; // 清空旧内容
 
+          materials.forEach(material => {
+            const clone = materialTemplate.content.cloneNode(true);
+
+            clone.querySelector(".material-heading").textContent = material.heading;
+            clone.querySelector(".material-description").textContent = material.description;
+
+                  //Append the populated template to the list
+      materialList.appendChild(clone);
+          });
       //Hide the loader
       loader.classList.toggle("hidden");
-      //Append the populated template to the list
-      materialList.appendChild(clone);
     })
     .catch(error => {
       //make a meaningful error message and post to DOM
